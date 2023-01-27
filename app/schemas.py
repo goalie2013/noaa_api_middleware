@@ -18,6 +18,7 @@ class ResModel(BaseModel):
     name: str | None = None
     
   
+  
 class DatasetParameter(str, Enum):
     SUMMARY = "summary"
     WEATHER_RADAR_TWO = "radar2"
@@ -72,5 +73,5 @@ class EE(str, Enum):
     CLIMATE_NORMALS_DAY = "normal_dly",
     CLIMATE_NORMALS_MONTH = "normal_mly",
     CLIMATE_NORMALS_YEAR = "normal_ann",
-    PRECIP_15_MIN = "PRECIP_15",
-    PRECIP_HOUR = "PRECIP_HLY"
+    PRECIP_15_MIN = "precip_15",
+    PRECIP_HOUR = "precip_hly"

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Response
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from schemas import *
 from load_json import load_id_map, id_map_to_list, add_saved_data, add_lst
@@ -7,8 +7,8 @@ from typing import List
 
 app = FastAPI()
 
+# Add CORS Middleware
 origins = ["http://127.0.0.1:8000"]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -17,10 +17,10 @@ app.add_middleware(
     allow_headers=['*']
 )
 
-# Upload json obj from 'data.json' local file
-id_map = load_id_map()
+# Upload json object from 'data.json' local file
+# id_map = load_id_map()
 #id_lst = id_map_to_list(id_map)
-
+# print('type idmap', type(id_map))
 
 
 @app.get("/")
@@ -30,7 +30,7 @@ async def root():
 
     
 @app.get("/{param1}/{param2}", response_model=List[ResModel])
-async def bar(param1: DatasetParameter, param2: SummaryParameter | ClimateParameter | PptParameter, queries: Queries):
+async def bar(param1: DatasetParameter, param2: SummaryParameter | ClimateParameter | PptParameter, queries: Queries, map: dict = Depends(load_id_map)):
     """ Get Data from Dataset
     Find 'datasetid' for query: data_categories[param2]
     'datasetid', 'startdate', & 'enddate' are REQUIRED query parameters.
@@ -50,9 +50,9 @@ async def bar(param1: DatasetParameter, param2: SummaryParameter | ClimateParame
 
     response_lst = api.send_request_to_noaa(payload)
     
-    updated_lst = add_saved_data(response_lst, id_map=id_map)
+    updated_lst = add_saved_data(response_lst, id_map=map)
     # add_lst(response_lst, id_lst)
-    # print(updated_lst)
+
     return updated_lst
 
 

@@ -3,6 +3,8 @@ from fastapi import status, HTTPException, Response
 from schemas import *
 from config import settings
 from dotenv import load_dotenv
+from typing import List
+import time
 
 load_dotenv()
 
@@ -26,16 +28,21 @@ def validate_get_request(dataset_id, dataset_type):
     return 1;
 
 
-def send_request_to_noaa(payload):
+def send_request_to_noaa(payload) -> List[dict]:
+    """Send GET request to NOAA API and return the results, a list of objects """
+    
     base_url = "https://www.ncei.noaa.gov/cdo-web/api/v2/data"
     # !! TODO !!
     headers = {'token': settings.api_token}
 
+    start = time.perf_counter()
     response = requests.get(base_url, headers=headers, params=payload)
+    finish = time.perf_counter()
+    print(finish - start)
     print('response url', response.url)
     # print('response', response, response.json())
     data = response.json()
-    print(data)
+    print('metadata', data["metadata"])
     if data:
         return data["results"]
     

@@ -14,4 +14,4 @@ class Settings(BaseSettings):
     
 settings = Settings()
 
-print(settings.api_token)
+# print(settings.api_token)

@@ -4,8 +4,8 @@ import time
 def load_id_map():
     """ Open data.json file, load, and return the data (dictionary)"""
     
-    print('load_id_map')
-    with open('data.json', 'r') as f:
+    print('running load_id_map...')
+    with open('datatypes.json', 'r') as f:
         return json.load(f)
     
 def id_map_to_list(id_map: dict):
