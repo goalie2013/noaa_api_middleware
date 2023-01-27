@@ -2,7 +2,7 @@ import json
 import time
 
 def load_id_map():
-    """ Open data.json file, load, and return the data (dictionary)"""
+    """ Open data.json file, load, and return the data (dictionary) """
     
     print('running load_id_map...')
     with open('datatypes.json', 'r') as f:
@@ -13,10 +13,10 @@ def id_map_to_list(id_map: dict):
     
     
 def add_saved_data(lst1: list, id_map: dict = load_id_map()):
-    """ Add 'name' description into the first list from the saved object [Use Dependency Injection to get the id_map (saved dict)]"""
+    """ Add 'name' description into each dict in the first list from 
+    the saved object [Use Dependency Injection to get the id_map (saved dict)]"""
     
     start = time.perf_counter()
-    print('add_data start time', time.perf_counter())
     
     for obj in lst1:
         id: str = obj.get('datatype')
@@ -27,9 +27,8 @@ def add_saved_data(lst1: list, id_map: dict = load_id_map()):
             obj['id'] = id
             obj['name'] = saved_obj.get('name')
             
-    print('add_data finish time', time.perf_counter())
     finish = time.perf_counter()
-    print(finish - start)
+    print('total time', finish - start)
     
     return lst1
     

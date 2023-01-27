@@ -8,6 +8,15 @@ import time
 
 load_dotenv()
 
+class API:
+    def __init__(self, api_token, url) -> None:
+        self.url = url
+        self.headers = {'token': api_token}
+    
+    def __fetch_data(self, url, payload={}):
+        """ Private function that runs the HTTP GET Request to NOAA API"""
+        return requests.get(url, headers=self.headers, params=payload)
+
 def validate_get_request(dataset_id, dataset_type):
     match dataset_id:
         case DatasetParameter.SUMMARY:
@@ -39,11 +48,12 @@ def send_request_to_noaa(payload) -> List[dict]:
     response = requests.get(base_url, headers=headers, params=payload)
     finish = time.perf_counter()
     print(finish - start)
+    
     print('response url', response.url)
     # print('response', response, response.json())
     data = response.json()
-    print('metadata', data["metadata"])
     if data:
+        print('metadata', data["metadata"])
         return data["results"]
     
     return []

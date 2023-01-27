@@ -7,16 +7,18 @@ class Queries(BaseModel):
     offset: int = 0
     limit: int = 50
     datatypeid: str | None = None
-    options: object | None = None
+    sortfield: str | None = None
+    sortorder: str | None = None
+    units: str | None = None
+    locationid: str | None = None
     
 
 
 class ResModel(BaseModel):
-    date: str
-    value: int
     id: str | None = None
     name: str | None = None
-    
+    date: str
+    value: int
   
   
 class DatasetParameter(str, Enum):
@@ -75,3 +77,14 @@ class EE(str, Enum):
     CLIMATE_NORMALS_YEAR = "normal_ann",
     PRECIP_15_MIN = "precip_15",
     PRECIP_HOUR = "precip_hly"
+    
+    
+class Q:
+    """Class to add default query parameters only if needed"""
+    
+    def __init__(self, limit = 50, offset = 0, **kwargs) -> None:
+        print('kwargs', kwargs)
+        for k,v in kwargs.items():
+            setattr(self, k, v)
+        self.limit = limit
+        self.offset = offset
